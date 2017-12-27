@@ -4,8 +4,14 @@ const gitUsername = require('git-username');
 const { json } = require('mrm-core');
 
 function task(config) {
-	const { name, url, github, minNode, license } = config
-		.defaults({ github: gitUsername(), minNode: 6.9, license: 'MIT' })
+	const { name, url, github, minNode, license, packageDefaults, packageValues } = config
+		.defaults({
+			github: gitUsername(),
+			minNode: 6.9,
+			license: 'MIT',
+			packageDefaults: {},
+			packageValues: {},
+		})
 		.defaults(meta)
 		.require('name', 'url', 'github')
 		.values();
@@ -34,6 +40,7 @@ function task(config) {
 		keywords: [],
 		dependencies: {},
 		devDependencies: {},
+		...packageDefaults,
 	});
 
 	// Update
@@ -42,6 +49,7 @@ function task(config) {
 			engines: {
 				node: `>=${minNode}`,
 			},
+			...packageValues,
 		});
 	}
 
